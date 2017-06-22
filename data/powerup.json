@@ -1,0 +1,17 @@
+{
+	"c":{"sx":0,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"h":{"sx":26,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"r":{"sx":52,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"s":{"sx":78,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"f":{"sx":104,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"l":{"sx":130,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"i":{"sx":156,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"b":{"sx":182,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"g":{"sx":208,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"d":{"sx":234,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"2h":{"sx":260,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"z":{"sx":286,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"t":{"sx":312,"sy":0,"tileW":26,"tileH":20,"frames":1},
+	"v":{"sx":338,"sy":0,"tileW":26,"tileH":20,"frames":1}
+
+}
