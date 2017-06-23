@@ -1,4 +1,11 @@
 # Metal Slug
+Link a demo
+https://youtu.be/eb9hmO-ICJk
+
+Link a juego
+https://alvarowada.github.io/metal
+
+
 1. Diseño del juego
 
     1.1 Objetivo del juego: cómo se gana, cómo se pierde.
@@ -64,6 +71,8 @@ Power Ups:
 - B Power Up: Es un componente que extiende de Power Up y que cuando el personaje lo coge, adquiere una ventaja en forma de munición de bombas, recarga en 10 las bombas que el personaje tiene.
 
 3. Equipo de trabajo y reparto de tareas:
+
+Para el reparto de tareas nos hemos organizado el 50%, mientras uno realizaba las mecanicas del juego, el otro buscaba los recursos graficos y viceversa
 
 4. Fuentes y referencias:
 Referencias a todos los assets no propios utilizados en la realización del juego.
