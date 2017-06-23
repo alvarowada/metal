@@ -6,7 +6,7 @@ var startGame = function(){	var Q = Quintus()
 	.controls().touch()
 	.enableSound();
 
-	Q.debug = true;
+	//Q.debug = true;
 
 
 	var SPRITE_PLAYER = 1;
@@ -88,17 +88,17 @@ var startGame = function(){	var Q = Quintus()
 		},
 
 		step:function(dt){
-
+			//console.log(this.p.x);
 			if(!this.p.muriendo){
-				//console.log(this.p.h);
+				
 				this.p.sprite = "walter_anim";
 				this.p.sheet = "Walter";
 				this.size(true);
 
 				var p = this.p;
-				if(p.y>600){
-					p.x=150;
-					p.y=380
+				if(p.y>500){
+					
+					Q.stageScene("endGame");
 				}
 				
 				
@@ -163,12 +163,13 @@ var startGame = function(){	var Q = Quintus()
 					}
 				}
 				console.log(masCercanoDistancia);
-				if(masCercanoDistancia<=50){
+				c2=Math.abs(masCercano.p.y-y);
+				if(masCercanoDistancia<=50 && c2<10){			
 					console.log("acuchilla");
+				
 					masCercano.hit(5);
 					Q.state.inc("score", 40);
-					Q.audio.play('cuchillo.mp3');
-
+					Q.audio.play('cuchillo.mp3');					
 				}
 				else{
 					console.log("dispara");
@@ -288,7 +289,7 @@ var startGame = function(){	var Q = Quintus()
 				sheet:"bullet",
 				sprite: "bullet",
                 type: SPRITE_PLAYER_BULLET,
-				collisionMask: SPRITE_ENEMY|SPRITE_TILED ,
+				collisionMask: SPRITE_ENEMY|SPRITE_TILED|SPRITE_ENEMY_BULLET ,
                 sensor: true,
 				gravity:0
 			});
@@ -308,10 +309,11 @@ var startGame = function(){	var Q = Quintus()
 			if(distancia>600 ){
 				this.destroy();
 			}
-            if (this.p.y < 0 ||this.p.vx===0) {
+            if (this.p.y < 0 ) {
                 this.destroy();
             }
         }
+		
 	});
 
 	Q.component('playerBullet',{
@@ -321,9 +323,10 @@ var startGame = function(){	var Q = Quintus()
 		extend: {
 			hit: function(col){
 				if (col.obj.isA("Enemy")) {
-						this.destroy();
-						col.obj.hit(1);
-					}
+					this.destroy();
+					col.obj.hit(1);
+				}
+				this.destroy();
 			}
 		}
 	});
@@ -338,9 +341,10 @@ var startGame = function(){	var Q = Quintus()
 		extend: {
 			hit: function(col){
 				if (col.obj.isA("Enemy")) {
-						this.destroy();
-						col.obj.hit(2);
-					}
+					this.destroy();
+					col.obj.hit(2);
+				}
+				this.destroy();
 			}
 		}
 	});
@@ -407,6 +411,7 @@ var startGame = function(){	var Q = Quintus()
 					this.destroy();
 					Q.state.dec("lives", 1);
 				}
+				this.destroy();
 			}
 		}
 	});
@@ -417,7 +422,7 @@ var startGame = function(){	var Q = Quintus()
 			this.entity.p.sprite= "bulletC";
 			this.entity.on("hit", "hit" );
 			this.entity.p.type= SPRITE_ENEMY_BULLET;
-			this.entity.p.collisionMask= SPRITE_PLAYER|SPRITE_TILED;
+			this.entity.p.collisionMask= SPRITE_PLAYER|SPRITE_TILED|SPRITE_PLAYER_BULLET;
 			this.entity.p.t=0;
 			this.entity.size(true);
 		},
@@ -430,7 +435,7 @@ var startGame = function(){	var Q = Quintus()
 			},
 			step: function(dt) {
 				this.p.t+=dt;
-				if(this.p.t>4)
+				if(this.p.t>6)
 					this.destroy();
 				var player = Q("Player");
 				
@@ -442,16 +447,16 @@ var startGame = function(){	var Q = Quintus()
 				c2=player.p.y-y;
 				
 				if(c1<0)//delante
-					this.p.vx=-50;
+					this.p.vx=-80;
 				else if(c1>0)//detras
-					this.p.vx=50;	
+					this.p.vx=80;	
 				else
 					this.p.vx=0;
 					
 				if(c2>0)//arriva
-					this.p.vy=50;
+					this.p.vy=80;
 				else if(c2<0)//abajo
-					this.p.vy=-50;
+					this.p.vy=-80;
 				else 
 					this.p.vy=0;
 			}
@@ -644,7 +649,8 @@ var startGame = function(){	var Q = Quintus()
 				//console.log(this.p.hp);
 				if(this.p.hp<=0){
 					this.destroy();
-					Q.stageScene("entreacto");
+					Q.clearStages();
+					Q.stageScene("inicio");
 				}
 			},
 			step:function(dt){
@@ -692,7 +698,7 @@ var startGame = function(){	var Q = Quintus()
 	});
 	
 	
-	/*Q.component('helicopterEnemy',{
+	Q.component('helicopterEnemy',{
 		added: function() {
 			this.entity.p.sheet="Helicopter";
 			this.entity.p.sprite= "helicopter";
@@ -709,7 +715,7 @@ var startGame = function(){	var Q = Quintus()
 				//console.log(this.p.hp);
 				if(this.p.hp<=0){
 					this.destroy();
-					Q.stageScene("inicio");
+					Q.stageScene("entreacto");
 				}
 			},
 			step:function(dt){
@@ -717,69 +723,51 @@ var startGame = function(){	var Q = Quintus()
 				this.p.t+=dt;
 				
 				if(this.p.disparando){
+					console.log("disparando");
+					
+					player = Q("Player");
+					player=player.first();	
+					c1=player.p.x-this.p.x;
 				
 					if(c1<0)//delante
-						this.p.vx=-50;
+						this.p.vx=-70;
 					else if(c1>0)//detras
-						this.p.vx=50;	
+						this.p.vx=70;	
 					else
 						this.p.vx=0;
 						
-					if(this.p.rafaga===4){
+					if(this.p.rafaga===8){
 						this.p.rafaga=0;
 						this.p.t=-3;
 						this.p.disparando=false;
+					}	
+					if(this.p.t>0.5){
+						console.log("dispara");
+						b1=new Q.Bullet({x:this.p.x, y:this.p.y+10, vx:1, vy:100})
+						b1.add("enemyBullet");							
+						this.stage.insert(b1);
+						this.p.t=0;
+
+						this.p.rafaga++
 					}
-					
-					
 				}
 				else{
 					if(this.p.t>0.5){
-					console.log("comprueba");
-
-					var player = Q("Player");
-				
-					x=this.p.x;
-					
-					player=player.first();
-					c1=player.p.x-x;
-					
-					if(Math.abs(c1)<300 ){
-						this.p.disparando=true;
-					}
-					this.p.t=0;
-				}
-				
-				}
-				
-				if(this.p.rafaga===4){
-							
-							
-						}
-						else{
+						console.log("comprueba");
+						this.p.vx=0;
+						player = Q("Player");
+						player=player.first();	
+						c1=player.p.x-this.p.x;
 						
-								
-						
-							console.log("dispara");
-							b1=new Q.Bullet({x: this.p.x ,y: this.p.y+10,vx:0,vy:20})
-							b1.add("enemyBullet");							
-							this.stage.insert(b1);
-
-							this.p.rafaga++;
-							this.p.t=0;
-						}
-					else{
-
-						if(Math.abs(c1)<300 ){
+						if(Math.abs(c1)<400 ){
 							this.p.disparando=true;
 						}
 						this.p.t=0;
 					}
-					
-				}
+				}			
 			}
 		}
-	});*/
+	});
 	
 
 	//---------- POWER UP -----------//
@@ -895,7 +883,9 @@ var startGame = function(){	var Q = Quintus()
 
 			Q.compileSheets("ventajas.png","powerup.json");
 			
-			Q.stageScene("inicio");
+			Q.loadTMX("level2.tmx", function() {
+				Q.stageScene("inicio");
+			});
 		});
 	});
 
@@ -936,13 +926,12 @@ var startGame = function(){	var Q = Quintus()
 		e.add("defaultEnemy");
     	stage.insert( e );    
 
-		e=new Q.Enemy({x:400,y:100,hp:1,vx:100})
+		e=new Q.Enemy({x:400,y:100,hp:50,vx:100})
 		e.add("defaultEnemy");
     	stage.insert( e );  
 
-		e=new Q.Enemy({x:1000,y:20,hp:100,hp:5})//2900
+		e=new Q.Enemy({x:3500,y:40,hp:100,hp:5})
 		e.add("helicopterEnemy");
-		e.add("finalEnemy");
     	stage.insert( e );    		 		
 	
 		p1=new Q.PowerUp({x:800,y:136,ammo:5})
@@ -1002,8 +991,7 @@ var startGame = function(){	var Q = Quintus()
 		e.add("defaultEnemy");
     	stage.insert( e );  
 
-		e=new Q.Enemy({x:1000,y:20,hp:100,hp:5})//2900
-		e.add("helicopterEnemy");
+		e=new Q.Enemy({x:4000,y:20,hp:100,hp:50})
 		e.add("finalEnemy");
     	stage.insert( e );    		 		
 	
