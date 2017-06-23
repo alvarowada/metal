@@ -1,4 +1,4 @@
-# metal
+# Metal Slug
 1. Diseño del juego
 
     1.1 Objetivo del juego: cómo se gana, cómo se pierde.
@@ -19,6 +19,18 @@
 2. Diseño de la implementación:
 arquitectura y principales componentes.
 
+Personajes:
+    - Walter: Es el personaje principal del videojuego. A parte del movimiento principal de saltar, agacharse y desplazarse, éste personaje es capaz de lanzar bombas, disparar numerosas armas y acuchillar a los enemigos. En su método fire comprueba si los enemigos están a una distancia <=50, si es así el personaje acuchilla al enemigo causándole 5 puntos de daño y si se encuentra a una distancia superior disparará con su arma causándole distinto daño dependiendo de la arma que tenga en ese momento. 
+    
+    - Soldado Enemigo: Se ha implementado un componente que extiende de nuestro Enemy, el cuál comprueba cuándo nuestro personaje principal se encuentra a menos de 300 m para poder disparar
+    
+    - Enemigo Final: Existen dos tipos de enemigos finales. Para la mision 1 tenemos a un tanque el cuál lanza cohetes que te persiguen y por otro lado para la segunda misión se ha implementado un helicoptero el cuál sigue tu posicion y te dispara. Para el primer enemigo final se ha implementado un componente que extiende de nuestro Enemy, el cuál comienza a disparar cuando detecta a una distancia determinada a nuestro personaje. Dispara una rafaga de 4 misilies y vuelve a comprobar la posición del personaje principal para volver a disparar.
+Para el segundo enemigo final se ha implementado un componente que extiende de nuestro Enemy, el cuál cada 0.5 segundo comprueba la posición de nuestro jugador y de desplaza para colocarse encima suyo y lanzar una ráfaga de 4 disparos.
+
+Municion:
+
+
+Power Ups:
 
 3. Equipo de trabajo y reparto de tareas:
 
