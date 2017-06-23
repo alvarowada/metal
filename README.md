@@ -20,7 +20,8 @@
 arquitectura y principales componentes.
 
 Personajes:
-    - Walter: Es el personaje principal del videojuego. A parte del movimiento principal de saltar, agacharse y desplazarse, éste personaje es capaz de lanzar bombas, disparar numerosas armas y acuchillar a los enemigos. En su método fire comprueba si los enemigos están a una distancia <=50, si es así el personaje acuchilla al enemigo causándole 5 puntos de daño y si se encuentra a una distancia superior disparará con su arma causándole distinto daño dependiendo de la arma que tenga en ese momento. 
+
+    - Walter: Es el personaje principal del videojuego. A parte del movimiento principal de saltar, agacharse y desplazarse, éste personaje es capaz de lanzar bombas, disparar numerosas armas y acuchillar a los enemigos. En su método fire comprueba si los enemigos están a una distancia <=50, si es así el personaje acuchilla al enemigo causándole 5 puntos de daño y si se encuentra a una distancia superior disparará con su arma causándole distinto daño dependiendo de la arma que tenga en ese momento. 
     
     - Soldado Enemigo: Se ha implementado un componente que extiende de nuestro Enemy, el cuál comprueba cuándo nuestro personaje principal se encuentra a menos de 300 m para poder disparar
     
