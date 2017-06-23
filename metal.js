@@ -62,7 +62,11 @@ var startGame = function(){	var Q = Quintus()
 	});
 
 	Q.animations("helicopter",{
-		helicopter:{ frames:[0,1,2,3,4,5,6,7,8,9,10,11,12], rate:1/5, flip:false, loop:false}
+		right:{ frames:[0,1,2,3,4,5,6,7,8,9,10], rate:1/5, flip:false, loop:false},
+		left:{ frames:[0,1,2,3,4,5,6,7,8,9,10], rate:1/5, flip:"x", loop:false},
+		arriba:{ frames:[11,12,13], rate:1/5, flip:false, loop:true},
+		dispara:{ frames:[14,15], rate:1, flip:false, loop:false}
+
 	});
 
 
@@ -88,7 +92,7 @@ var startGame = function(){	var Q = Quintus()
 		},
 
 		step:function(dt){
-			//console.log(this.p.x);
+			
 			if(!this.p.muriendo){
 				
 				this.p.sprite = "walter_anim";
@@ -107,12 +111,10 @@ var startGame = function(){	var Q = Quintus()
 						this.play("bend_right",1);
 					else
 						this.play("bend_left",1);
-					this.p.sheet = "WalterA";
 				}
 				
 				if(this.p.vx>0){
 					this.play("walk_right");
-					this.p.sheet = "Walter";
 				}
 				else if(this.p.vx<0){
 					this.play("walk_left");
@@ -162,17 +164,14 @@ var startGame = function(){	var Q = Quintus()
 						masCercano=enemigo;
 					}
 				}
-				console.log(masCercanoDistancia);
 				c2=Math.abs(masCercano.p.y-y);
-				if(masCercanoDistancia<=50 && c2<10){			
-					console.log("acuchilla");
+				if(masCercanoDistancia<=50 && c2<2){			
 				
 					masCercano.hit(5);
 					Q.state.inc("score", 40);
 					Q.audio.play('cuchillo.mp3');					
 				}
 				else{
-					console.log("dispara");
 					bala=new Q.Bullet({
 						x: p.x +4,
 						y: p.y,
@@ -357,7 +356,6 @@ var startGame = function(){	var Q = Quintus()
 			this.entity.p.skipCollide=true;
 			//delete(this.entity.p.type);
 			//delete(this.entity.p.collisionMask);
-			console.log(this.entity);
 		},
 		extend: {
 
@@ -386,7 +384,6 @@ var startGame = function(){	var Q = Quintus()
 					
 					distancia= Math.sqrt((c1*c1)-(c2-c2));
 					if(distancia<15){
-						console.log(distancia);
 						enemigo.hit(5);
 						Q.state.inc("score", 20);
 					}
@@ -482,7 +479,6 @@ var startGame = function(){	var Q = Quintus()
 			this.on("dead");
 		},
         dead: function(){
-        	//console.log("destrulle bomba");
 			this.destroy();
         },
 		step: function(dt) {
@@ -579,7 +575,6 @@ var startGame = function(){	var Q = Quintus()
 					Q.audio.play('muerte2.mp3');
 					this.p.muriendo = true;
 				}
-				console.log("vida enemigo: ",this.p.hp);
 			},
 			step:function(dt){
 				if(!this.p.muriendo){
@@ -644,9 +639,7 @@ var startGame = function(){	var Q = Quintus()
 		extend: {
 			hit:function(damage) {
 				Q.state.inc("score", 10);
-				console.log(this.p.hp);
 				this.p.hp-=damage;
-				//console.log(this.p.hp);
 				if(this.p.hp<=0){
 					this.destroy();
 					Q.clearStages();
@@ -665,7 +658,6 @@ var startGame = function(){	var Q = Quintus()
 							this.p.disparando=false;
 						}
 						else{
-							//console.log("dispara");
 							Q.audio.play('misil.mp3');
 							b1=new Q.Bullet({x: this.p.x -4,y: this.p.y,vx: -100})
 							b1.add("finalEnemyBullet");							
@@ -676,7 +668,6 @@ var startGame = function(){	var Q = Quintus()
 						}
 					}
 					else{
-						//console.log("comprueba");
 						var player = Q("Player");
 					
 						x=this.p.x;
@@ -710,9 +701,7 @@ var startGame = function(){	var Q = Quintus()
 		extend: {
 			hit:function(damage) {
 				Q.state.inc("score", 10);
-				console.log(this.p.hp);
 				this.p.hp-=damage;
-				//console.log(this.p.hp);
 				if(this.p.hp<=0){
 					this.destroy();
 					Q.stageScene("entreacto");
@@ -723,16 +712,19 @@ var startGame = function(){	var Q = Quintus()
 				this.p.t+=dt;
 				
 				if(this.p.disparando){
-					console.log("disparando");
 					
 					player = Q("Player");
 					player=player.first();	
 					c1=player.p.x-this.p.x;
 				
-					if(c1<0)//delante
+					if(c1<0){//delante
 						this.p.vx=-70;
-					else if(c1>0)//detras
+						this.play("right",1);
+					}
+					else if(c1>0){//detras
 						this.p.vx=70;	
+						this.play("left",2);
+					}
 					else
 						this.p.vx=0;
 						
@@ -742,7 +734,6 @@ var startGame = function(){	var Q = Quintus()
 						this.p.disparando=false;
 					}	
 					if(this.p.t>0.5){
-						console.log("dispara");
 						b1=new Q.Bullet({x:this.p.x, y:this.p.y+10, vx:1, vy:100})
 						b1.add("enemyBullet");							
 						this.stage.insert(b1);
@@ -753,7 +744,6 @@ var startGame = function(){	var Q = Quintus()
 				}
 				else{
 					if(this.p.t>0.5){
-						console.log("comprueba");
 						this.p.vx=0;
 						player = Q("Player");
 						player=player.first();	
@@ -926,29 +916,97 @@ var startGame = function(){	var Q = Quintus()
 		e.add("defaultEnemy");
     	stage.insert( e );    
 
-		e=new Q.Enemy({x:400,y:100,hp:50,vx:100})
+		e=new Q.Enemy({x:400,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e ); 
+
+    	e=new Q.Enemy({x:800,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );    
+
+		e=new Q.Enemy({x:1000,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+				 		
+		e=new Q.Enemy({x:850,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+	
+		p1=new Q.PowerUp({x:770,y:136,ammo:20})
+		p1.add("hPowerUp");
+		stage.insert( p1 );
+		
+		e=new Q.Enemy({x:1390,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  		 		
+
+		e=new Q.Enemy({x:1290,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  	 		
+
+		p2=new Q.PowerUp({x:1233,y:200,ammo:5})
+		p2.add("bPowerUp");
+		stage.insert( p2 );
+
+		e=new Q.Enemy({x:2400,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );    
+
+		e=new Q.Enemy({x:2450,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e ); 
+
+    	e=new Q.Enemy({x:2129,y:150,vx:100})
 		e.add("defaultEnemy");
     	stage.insert( e );  
 
-		e=new Q.Enemy({x:3500,y:40,hp:100,hp:5})
-		e.add("helicopterEnemy");
-    	stage.insert( e );    		 		
-	
-		p1=new Q.PowerUp({x:800,y:136,ammo:5})
-		p1.add("bPowerUp");
-		stage.insert( p1 );
-		
-		p2=new Q.PowerUp({x:900,y:250})
-		p2.add("hPowerUp");
-		stage.insert( p2 );
-		
-		p3=new Q.PowerUp({x:1000,y:250,ammo:2})
+    	p4=new Q.PowerUp({x:2152,y:123,ammo:20})
+		p4.add("hPowerUp");
+		stage.insert( p4 );
+				 		
+		p3=new Q.PowerUp({x:2940,y:123,ammo:2})
 		p3.add("vPowerUp");
 		stage.insert( p3 );
 
-		p4=new Q.PowerUp({x:50,y:250,ammo:222})
-		p4.add("rPowerUp");
-		stage.insert( p4 );
+		e=new Q.Enemy({x:3600,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+
+		e=new Q.Enemy({x:3560,y:40,hp:50,hp:5})
+		e.add("helicopterEnemy");
+    	stage.insert( e );
+
+    	e=new Q.Enemy({x:3600,y:40,hp:50,hp:5})
+		e.add("helicopterEnemy");
+    	stage.insert( e );  
+
+    	e=new Q.Enemy({x:3700,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );    
+
+    	e=new Q.Enemy({x:3560,y:40,hp:100,hp:5})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+
+    	e=new Q.Enemy({x:3700,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );    
+
+    	e=new Q.Enemy({x:3860,y:40})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+
+    	e=new Q.Enemy({x:3770,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );    
+
+    	e=new Q.Enemy({x:3550,y:40})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+
+    	e=new Q.Enemy({x:3880,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );    
 	});
 
 	//------------- LEVEL 2 -------------//
@@ -985,31 +1043,60 @@ var startGame = function(){	var Q = Quintus()
 			
 		e=new Q.Enemy({x:500,y:100,vx:100})
 		e.add("defaultEnemy");
+    	stage.insert( e );  
+
+		e=new Q.Enemy({x:400,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e ); 
+
+    	e=new Q.Enemy({x:800,y:100,vx:100})
+		e.add("defaultEnemy");
     	stage.insert( e );    
 
-		e=new Q.Enemy({x:400,y:100,hp:1,vx:100})
+		e=new Q.Enemy({x:1000,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+				 		
+		e=new Q.Enemy({x:850,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+	
+		p1=new Q.PowerUp({x:780,y:136,ammo:20})
+		p1.add("hPowerUp");
+		stage.insert( p1 );
+				 		
+		p3=new Q.PowerUp({x:1415,y:102,ammo:5})
+		p3.add("rPowerUp");
+		stage.insert( p3 );
+
+    	e=new Q.Enemy({x:4020,y:128,hp:80})
+		e.add("finalEnemy");
+    	stage.insert( e );  
+
+    	e=new Q.Enemy({x:4000,y:200,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );    
+
+		e=new Q.Enemy({x:3700,y:200,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+				 		
+		e=new Q.Enemy({x:2500,y:200,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );
+
+    	e=new Q.Enemy({x:4050,y:200,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );    
+
+		e=new Q.Enemy({x:3710,y:200,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+				 		
+		e=new Q.Enemy({x:2540,y:200,vx:100})
 		e.add("defaultEnemy");
     	stage.insert( e );  
 
-		e=new Q.Enemy({x:4000,y:20,hp:100,hp:50})
-		e.add("finalEnemy");
-    	stage.insert( e );    		 		
-	
-		p1=new Q.PowerUp({x:800,y:136,ammo:5})
-		p1.add("bPowerUp");
-		stage.insert( p1 );
-		
-		p2=new Q.PowerUp({x:900,y:250})
-		p2.add("hPowerUp");
-		stage.insert( p2 );
-		
-		p3=new Q.PowerUp({x:1000,y:250,ammo:2})
-		p3.add("vPowerUp");
-		stage.insert( p3 );
-
-		p4=new Q.PowerUp({x:50,y:250,ammo:222})
-		p4.add("rPowerUp");
-		stage.insert( p4 );
 	});
 
 
@@ -1122,7 +1209,7 @@ var startGame = function(){	var Q = Quintus()
 	//--------- HUD ---------//
 	Q.scene('hud',function(stage) {
 		
-		Q.state.reset({ "score": 100, "lives":555, "bombs":10, "ammo":0});
+		Q.state.reset({ "score": 0, "lives":10, "bombs":10, "ammo":0});
 	  	
 	  	var container1 = stage.insert(
 			new Q.UI.Container({fill: "gray",border: 2,shadow: 5,shadowColor: "rgba(0,0,0,0.2)", scale:0.6})
