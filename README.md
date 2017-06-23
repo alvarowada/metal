@@ -9,20 +9,20 @@
     
     2.2 Principales mecánicas.
     
-    - Escenario: El escenario en el que se deserrolla el juego es de tipo plataformas en el que el jugador podrá interactuar con él pudiendo saltar para alcanzar ciertos objetos, y avanzar venciendo los enemigos que aparezcan hasta llegar donde se encuentra el jefe final y derrotarlo.
-    
-    - Acción: El personaje no tendrá barra de salud ya que morirá de un golpe, pero tendrá varias vidas para volverlo a intentar desde donde se quedó. 
-    
-    - Enemigos: El jugadore se encontrará a lo largo del nivel a diferentes enemigos con diferentes armas que tratarán de que nuestro personaje principal no llegue al final de la misión. Cada enemigo tendrá a su vez diferente vida y armas con munición de distinto tipo.
-   
-   - Armas: A lo largo del juego se colocarán diferentes Power Ups en forma de armas. Éstas armas nos proporcionarán una mayor potencia de tiro al aunmentar el daño inflingido por las balas, lo que nos ayudará con los enemigos más fuertes.
+- Escenario: El escenario en el que se deserrolla el juego es de tipo plataformas en el que el jugador podrá interactuar con él pudiendo saltar para alcanzar ciertos objetos, y avanzar venciendo los enemigos que aparezcan hasta llegar donde se encuentra el jefe final y derrotarlo.
     
-    - Vidas: El personaje dispondrá de unicamente 1 sola vida la cuál se agotará cuando reciba 5 impactos de bala por parte de sus enemigos. Ésta vida podrá ser aumentada con el uso de Power Ups que irá encontrando por el nivel.
-    
-    - Putuación: El personaje conseguirá una serie de puntos por las acciones que realice en el juego, por matar enemigos, por conseguir power ups , por acuchillar enemigos, por matarles con bombas, etc...
+- Acción: El personaje no tendrá barra de salud ya que morirá de un golpe, pero tendrá varias vidas para volverlo a intentar desde donde se quedó.
+
+- Enemigos: El jugadore se encontrará a lo largo del nivel a diferentes enemigos con diferentes armas que tratarán de que nuestro personaje principal no llegue al final de la misión. Cada enemigo tendrá a su vez diferente vida y armas con munición de distinto tipo.
+
+- Armas: A lo largo del juego se colocarán diferentes Power Ups en forma de armas. Éstas armas nos proporcionarán una mayor potencia de tiro al aunmentar el daño inflingido por las balas, lo que nos ayudará con los enemigos más fuertes.
+
+- Vidas: El personaje dispondrá de unicamente 1 sola vida la cuál se agotará cuando reciba 5 impactos de bala por parte de sus enemigos. Ésta vida podrá ser aumentada con el uso de Power Ups que irá encontrando por el nivel.
+
+- Putuación: El personaje conseguirá una serie de puntos por las acciones que realice en el juego, por matar enemigos, por conseguir power ups , por acuchillar enemigos, por matarles con bombas, etc...
 
 2. Diseño de la implementación:
-arquitectura y principales componentes.
+Arquitectura y Principales Componentes.
 
 Personajes:
 
