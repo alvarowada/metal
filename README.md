@@ -6,6 +6,9 @@
     Es un videojuego de tipo run and gun y shoot’em up cuyo objetivo es llegar al final del escenario matando al mayor número de enemigos utilizando armas que encontraremos por el escenario hasta llegar al jefe final, el cuál tendrá que ser derrotado para pasar de nivel o ganar la partida.
     El jugador dispondrá de una vida por nivel, la cuál se irá agotando cada vez que los enemigos le disparen. Cuando el jugador reciba daño 5 veces por parte de sus enemigos, éste morirá y el juego finalizará. Estas vidas se pueden recargar con Power Ups que encontrará el jugador a lo largo del nivel
     
+    Controles
+    se usa W A S D para moverser J para saltar K disparar y L lanzar bomba 
+    
     
     2.2 Principales mecánicas.
     
@@ -23,6 +26,8 @@
 
 2. Diseño de la implementación:
 Arquitectura y Principales Componentes.
+
+Se ha añadido una mascara de colisiones para poder elegir con que tipo de sprites quieres chocar.
 
 Personajes:
 
