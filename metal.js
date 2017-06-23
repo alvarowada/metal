@@ -644,7 +644,7 @@ var startGame = function(){	var Q = Quintus()
 				//console.log(this.p.hp);
 				if(this.p.hp<=0){
 					this.destroy();
-					Q.stageScene("inicio");
+					Q.stageScene("entreacto");
 				}
 			},
 			step:function(dt){
@@ -917,8 +917,8 @@ var startGame = function(){	var Q = Quintus()
 		
 		//Musica principal
 		Q.audio.stop();
-		//Q.audio.play('Mision1.mp3',{ loop: true} );
-		//Q.audio.play('m1.mp3');
+		Q.audio.play('Mision1.mp3',{ loop: true} );
+		Q.audio.play('m1.mp3');
 
 		//Inserto los enemigos
        /* var num_enemies = Math.floor(Math.random() * 10 + 30);
@@ -979,8 +979,8 @@ var startGame = function(){	var Q = Quintus()
 		
 		//Musica principal
 		Q.audio.stop();
-		//Q.audio.play('Mision1.mp3',{ loop: true} );
-		//Q.audio.play('m1.mp3');
+		Q.audio.play('Mision2.mp3',{ loop: true} );
+		Q.audio.play('m2.mp3');
 
 		//Inserto los enemigos
        /* var num_enemies = Math.floor(Math.random() * 10 + 30);
@@ -1041,6 +1041,19 @@ var startGame = function(){	var Q = Quintus()
 		Q.audio.play('gameover.mp3');
 	});
 
+	//------------ ENTREACTO ----------------//
+	Q.scene('entreacto',function(stage) {
+		var container = stage.insert(new Q.UI.Container({x: Q.width/2, y: Q.height/2}));
+		var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC", label: "LEVEL COMPLETE" }))
+
+		button.on("click",function() {
+			Q.clearStages();
+			Q.stageScene('level2');
+		});
+		container.fit(20);
+		Q.audio.stop();
+		Q.audio.play('finish.mp3');
+	});
 
 	//----------- PANTALLA INICIO ----------//
 	Q.scene('inicio',function(stage) {
