@@ -167,10 +167,11 @@ var startGame = function(){	var Q = Quintus()
 					console.log("acuchilla");
 					masCercano.hit(5);
 					Q.state.inc("score", 40);
+					Q.audio.play('cuchillo.mp3');
+
 				}
 				else{
 					console.log("dispara");
-
 					bala=new Q.Bullet({
 						x: p.x +4,
 						y: p.y,
@@ -218,16 +219,24 @@ var startGame = function(){	var Q = Quintus()
 							})
 					}
 					
-					if(Q.state.get("ammo")===0)
+					if(Q.state.get("ammo")===0){
 						bala.add("playerBullet");
+						Q.audio.play('pistola2.mp3');
+					}
 						
 					else{
 						Q.state.dec("ammo", 1);
 						if(Q.state.get("arma")==="r"){
 							bala.add("rBullet");
+							Q.audio.play('escopeta.mp3');
+
 						}
-						if(Q.state.get("arma")==="h")
+						if(Q.state.get("arma")==="h"){
 							bala.add("hBullet");
+
+							Q.audio.play('metralleta.mp3');
+						}	
+
 					}
 					bala.size(true);
 					this.stage.insert(bala);
@@ -324,6 +333,7 @@ var startGame = function(){	var Q = Quintus()
 			this.entity.p.sheet="bulletH";
 			this.entity.p.sprite= "hBullet_anim";
 			this.entity.on("hit", "hit" );
+
 		},
 		extend: {
 			hit: function(col){
@@ -346,6 +356,7 @@ var startGame = function(){	var Q = Quintus()
 			console.log(this.entity);
 		},
 		extend: {
+
 			hit: function(col){
 				if (col.obj.isA("Enemy")) {
 					this.rango();
@@ -484,6 +495,7 @@ var startGame = function(){	var Q = Quintus()
         },
 		hit: function(col) {
 			if (col.obj.isA("Enemy")) {
+				Q.audio.play('explosion.mp3');
 				this.explota();
 			}		
         },
@@ -509,7 +521,7 @@ var startGame = function(){	var Q = Quintus()
 			}
 			this.p.sheet="Explosion";
 			this.p.sprite= "explosion";
-				
+			Q.audio.play('explosion.mp3');
 			this.size(true);			
 			this.play("explote");
 		}
@@ -550,6 +562,7 @@ var startGame = function(){	var Q = Quintus()
 						this.p.sheet = "SoldierD";
 						this.p.vx=0;
 						this.play("dead");
+						Q.audio.play('muerte2.mp3');
 						this.p.muriendo = true;
 					}
 				}
@@ -558,6 +571,7 @@ var startGame = function(){	var Q = Quintus()
 					this.p.sheet = "SoldierD";
 					this.p.vx=0;
 					this.play("dead");
+					Q.audio.play('muerte2.mp3');
 					this.p.muriendo = true;
 				}
 				console.log("vida enemigo: ",this.p.hp);
@@ -592,10 +606,12 @@ var startGame = function(){	var Q = Quintus()
 							
 
 							if(c1<0){//delante
+								Q.audio.play('pistola.mp3');
 								b=new Q.Bullet({x: this.p.x ,y: this.p.y,vx: -150})
 								this.p.vx=100;
 							}
 							else if(c1>0){//detras
+								Q.audio.play('pistola.mp3');
 								b=new Q.Bullet({x: this.p.x +20,y: this.p.y,vx: 150})
 								this.p.vx=-100;
 							}						
@@ -644,6 +660,7 @@ var startGame = function(){	var Q = Quintus()
 						}
 						else{
 							//console.log("dispara");
+							Q.audio.play('misil.mp3');
 							b1=new Q.Bullet({x: this.p.x -4,y: this.p.y,vx: -100})
 							b1.add("finalEnemyBullet");							
 							this.stage.insert(b1);
@@ -800,11 +817,14 @@ var startGame = function(){	var Q = Quintus()
 	Q.component('hPowerUp',{
 		added: function() {
 			this.entity.p.sheet="h";
+
 		},
 		extend: {
 			powerUp: function(col){
 				Q.state.inc("ammo", this.p.ammo);
 				Q.state.set("arma","h");
+				Q.audio.play('BulletH.mp3');
+
 			}
 		}
 	});
@@ -816,6 +836,7 @@ var startGame = function(){	var Q = Quintus()
 		extend: {
 			powerUp: function(col){
 				Q.state.inc("bombs", this.p.ammo);
+				Q.audio.play('Ammunition.mp3');
 			}
 		}
 	});
@@ -827,18 +848,21 @@ var startGame = function(){	var Q = Quintus()
 		extend: {
 			powerUp: function(col){
 				Q.state.inc("lives", this.p.ammo);
+				Q.audio.play('Ammunition.mp3');
 			}
 		}
 	});
 	
 	Q.component('rPowerUp',{
 		added: function() {
-			this.entity.p.sheet="r";
+			this.entity.p.sheet="s";
 		},
 		extend: {
 			powerUp: function(col){
 				Q.state.inc("ammo", this.p.ammo);
 				Q.state.set("arma","r");
+				Q.audio.play('BulletR.mp3');
+
 
 			}
 		}
@@ -848,7 +872,7 @@ var startGame = function(){	var Q = Quintus()
 	
 	//------------- CARGA TMX ------------//
 	Q.loadTMX("level1.tmx", function() {
-		Q.load("bullet.png, bomb.png, enemyBullet.png, bulletH.png, bulletC.png, bulletR.png, walterMove.png, walter.json, walterD.png, walterD.json, soldier1.png, soldier.json, tank.png, soldierD.json, soldierD.png, start.png, powerup.json, ventajas.png, Mision1.mp3 , Mision2.mp3, Ammunition.mp3, BulletH.mp3, BulletR.mp3,start.mp3, finish.mp3, gameover.mp3,m1.mp3,m2.mp3,endgame.png,explosion.png,explosion.json,knife.json, knife.png, helicopter.json, helicopter.png", function(){
+		Q.load("bullet.png, bomb.png, enemyBullet.png, bulletH.png, bulletC.png, bulletR.png, walterMove.png, walter.json, walterD.png, walterD.json, soldier1.png, soldier.json, tank.png, soldierD.json, soldierD.png, start.png, powerup.json, ventajas.png, Mision1.mp3 , Mision2.mp3, Ammunition.mp3, BulletH.mp3, BulletR.mp3,start.mp3, finish.mp3, gameover.mp3, m1.mp3, m2.mp3, misil.mp3, explosion.mp3, cuchillo.mp3, pistola.mp3, pistola2.mp3, escopeta.mp3, metralleta.mp3, muerte1.mp3, muerte2.mp3, endgame.png,explosion.png,explosion.json,knife.json, knife.png, helicopter.json, helicopter.png", function(){
 			
 			Q.compileSheets("walterMove.png","walter.json");
 			Q.compileSheets("walterFire.png","walterF.json");
@@ -893,8 +917,8 @@ var startGame = function(){	var Q = Quintus()
 		
 		//Musica principal
 		Q.audio.stop();
-		Q.audio.play('Mision1.mp3',{ loop: true} );
-		Q.audio.play('m1.mp3');
+		//Q.audio.play('Mision1.mp3',{ loop: true} );
+		//Q.audio.play('m1.mp3');
 
 		//Inserto los enemigos
        /* var num_enemies = Math.floor(Math.random() * 10 + 30);
@@ -937,6 +961,69 @@ var startGame = function(){	var Q = Quintus()
 		p4.add("rPowerUp");
 		stage.insert( p4 );
 	});
+
+	//------------- LEVEL 2 -------------//
+	Q.scene("level2", function(stage){
+
+		Q.stageTMX("level2.tmx", stage);
+
+		//Inserto a Walter
+		stage.insert( new Q.Player({x:100,y:0}) );
+
+		//Centro la vista en Walter
+		stage.add( "viewport").follow( Q("Player").first(),{ x: true, y: false } );
+		
+		stage.viewport.offsetY=55;	
+		stage.viewport.offsetX=-200;	
+		Q.stageScene('hud', 3);
+		
+		//Musica principal
+		Q.audio.stop();
+		//Q.audio.play('Mision1.mp3',{ loop: true} );
+		//Q.audio.play('m1.mp3');
+
+		//Inserto los enemigos
+       /* var num_enemies = Math.floor(Math.random() * 10 + 30);
+        var enemies = new Array(num_enemies);
+            for (var i=0; i <= num_enemies; i++) {
+                enemies.push(stage.insert(new Q.Enemy({
+                    x: (Math.random() * (Q.width-120)) + 120,
+                    y: -(Math.random() * 300) - (300*i),
+                    vY: Math.random() * 75 + 100,
+                    vx:100
+                })));
+            }*/
+			
+		e=new Q.Enemy({x:500,y:100,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );    
+
+		e=new Q.Enemy({x:400,y:100,hp:1,vx:100})
+		e.add("defaultEnemy");
+    	stage.insert( e );  
+
+		e=new Q.Enemy({x:1000,y:20,hp:100,hp:5})//2900
+		e.add("helicopterEnemy");
+		e.add("finalEnemy");
+    	stage.insert( e );    		 		
+	
+		p1=new Q.PowerUp({x:800,y:136,ammo:5})
+		p1.add("bPowerUp");
+		stage.insert( p1 );
+		
+		p2=new Q.PowerUp({x:900,y:250})
+		p2.add("hPowerUp");
+		stage.insert( p2 );
+		
+		p3=new Q.PowerUp({x:1000,y:250,ammo:2})
+		p3.add("vPowerUp");
+		stage.insert( p3 );
+
+		p4=new Q.PowerUp({x:50,y:250,ammo:222})
+		p4.add("rPowerUp");
+		stage.insert( p4 );
+	});
+
 
 
 	//------------ FIN JUEGO ----------------//
