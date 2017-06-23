@@ -650,7 +650,7 @@ var startGame = function(){	var Q = Quintus()
 				if(this.p.hp<=0){
 					this.destroy();
 					Q.clearStages();
-					Q.stageScene("inicio");
+					Q.stageScene("final");
 				}
 			},
 			step:function(dt){
@@ -860,7 +860,7 @@ var startGame = function(){	var Q = Quintus()
 	
 	//------------- CARGA TMX ------------//
 	Q.loadTMX("level1.tmx", function() {
-		Q.load("bullet.png, bomb.png, enemyBullet.png, bulletH.png, bulletC.png, bulletR.png, walterMove.png, walter.json, walterD.png, walterD.json, soldier1.png, soldier.json, tank.png, soldierD.json, soldierD.png, start.png, powerup.json, ventajas.png, Mision1.mp3 , Mision2.mp3, Ammunition.mp3, BulletH.mp3, BulletR.mp3,start.mp3, finish.mp3, gameover.mp3, m1.mp3, m2.mp3, misil.mp3, explosion.mp3, cuchillo.mp3, pistola.mp3, pistola2.mp3, escopeta.mp3, metralleta.mp3, muerte1.mp3, muerte2.mp3, endgame.png,explosion.png,explosion.json,knife.json, knife.png, helicopter.json, helicopter.png", function(){
+		Q.load("bullet.png, bomb.png, enemyBullet.png, bulletH.png, bulletC.png, bulletR.png, walterMove.png, walter.json, walterD.png, walterD.json, soldier1.png, soldier.json, tank.png, soldierD.json, soldierD.png, start.png, powerup.json, ventajas.png, Mision1.mp3 , Mision2.mp3, Ammunition.mp3, BulletH.mp3, BulletR.mp3,start.mp3, finish.mp3, gameover.mp3, m1.mp3, m2.mp3, misil.mp3, explosion.mp3, cuchillo.mp3, pistola.mp3, pistola2.mp3, escopeta.mp3, metralleta.mp3, muerte1.mp3, muerte2.mp3, endgame.png,explosion.png,explosion.json,knife.json, knife.png, helicopter.json, helicopter.png, select.png", function(){
 			
 			Q.compileSheets("walterMove.png","walter.json");
 			Q.compileSheets("walterFire.png","walterF.json");
@@ -1014,7 +1014,7 @@ var startGame = function(){	var Q = Quintus()
 
 
 
-	//------------ FIN JUEGO ----------------//
+	//------------ END GAME ----------------//
 	Q.scene('endGame',function(stage) {
 		var container = stage.insert(new Q.UI.Container({x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"}));
 		var button = container.insert(
@@ -1028,6 +1028,41 @@ var startGame = function(){	var Q = Quintus()
 		Q.audio.stop();
 		Q.audio.play('gameover.mp3');
 	});
+			 
+	//------------ FINAL ----------------//
+	Q.scene('final',function(stage) {
+		var container = stage.insert(
+			new Q.UI.Container({x: 0, y: 0, fill: "rgba(0,0,0,0.5)"})
+		);
+		var button = container.insert(
+			new Q.UI.Button({ x: Q.width/2, y: 190, asset:"start.png" })
+		);
+
+		var label = stage.insert(new Q.UI.Text({ 
+	    	label: "Alvaro Isabel\n Ruben Garcia",
+	    	color: "white",
+	    	align: 'center',
+	    	x: Q.width/2-35,
+	    	y: 10,
+	    	scale: 0.6
+	    }));
+
+		var label1 = stage.insert(new Q.UI.Text({ 
+	    	label: "Basado en el juego original: Metal Slug",
+	    	color: "white",
+	    	align: 'center',
+	    	x: Q.width/2-35,
+	    	y: 270,
+	    	scale: 0.6
+	    }));
+
+
+		container.fit(20);
+		Q.audio.stop();
+		Q.audio.play('finish.mp3',{ loop: true} );
+	});
+			   
+			   
 
 	//------------ ENTREACTO ----------------//
 	Q.scene('entreacto',function(stage) {
@@ -1042,6 +1077,22 @@ var startGame = function(){	var Q = Quintus()
 		Q.audio.stop();
 		Q.audio.play('finish.mp3');
 	});
+	
+	//------------ SELECCION DE PERSONAJE ----------------//
+	Q.scene('seleccion',function(stage) {
+		var container = stage.insert(
+			new Q.UI.Container({x: 0, y: 0, fill: "rgba(0,0,0,0.5)"})
+		);
+		var button = container.insert(
+			new Q.UI.Button({ x: Q.width/2, y: 150,scale:0.85, asset:"select.png" })
+		);
+
+		button.on("click",function() {
+			Q.clearStages();
+			Q.stageScene('level1');
+		});
+	});
+			   
 
 	//----------- PANTALLA INICIO ----------//
 	Q.scene('inicio',function(stage) {
@@ -1057,22 +1108,15 @@ var startGame = function(){	var Q = Quintus()
 
 		button.on("click",function() {
 			Q.clearStages();
-			Q.stageScene('level1');
+			Q.stageScene('seleccion');
 		});
-
-		var label = stage.insert(new Q.UI.Text({ 
-	    	label: "Alvaro Isabel\n Ruben Garcia",
-	    	color: "white",
-	    	align: 'center',
-	    	x: Q.width/2-35,
-	    	y: 10,
-	    	scale: 0.6
-	    }));
 
 		container.fit(20);
 		Q.audio.stop();
 		Q.audio.play('start.mp3',{ loop: true} );
 	});
+			   
+			   
 
 
 	//--------- HUD ---------//
